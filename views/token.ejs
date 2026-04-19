@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Token</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #eaf6f6, #f8fbfc);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 500px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(16, 41, 53, 0.10);
+      overflow: hidden;
+    }
+
+    .header {
+      background: #0b7a75;
+      color: white;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .body {
+      padding: 24px;
+    }
+
+    .token-box {
+      text-align: center;
+      background: #f4fbfb;
+      border: 1px dashed #9ac7c5;
+      border-radius: 18px;
+      padding: 24px 16px;
+      margin-bottom: 22px;
+    }
+
+    .token-label {
+      font-size: 14px;
+      color: #6b7d86;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .token-number {
+      font-size: 60px;
+      font-weight: bold;
+      color: #0b7a75;
+      margin-bottom: 10px;
+    }
+
+    .details p {
+      margin-bottom: 10px;
+      font-size: 15px;
+      color: #16313a;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1;
+      text-align: center;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-print {
+      background: #0b7a75;
+      color: white;
+    }
+
+    .btn-admin {
+      background: #fff;
+      color: #16313a;
+      border: 1px solid #dbe4ea;
+    }
+
+    @media print {
+      .actions {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <h1>Jan Seva Samarpan Trust</h1>
+      <p>Medical Camp Token Slip</p>
+    </div>
+
+    <div class="body">
+      <div class="token-box">
+        <div class="token-label">Your Token Number</div>
+        <div class="token-number"><%= token.token_number %></div>
+      </div>
+
+      <div class="details">
+        <p><strong>Name:</strong> <%= token.name %></p>
+        <p><strong>Phone:</strong> <%= token.phone %></p>
+        <p><strong>Service:</strong> <%= token.service %></p>
+        <p><strong>Status:</strong> <%= token.status %></p>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-print" onclick="window.print()">Print Token</button>
+        <a href="/admin" class="btn btn-admin">Go to Admin Panel</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

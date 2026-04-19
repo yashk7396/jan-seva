@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Medical Camp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --border: #dbe4ea;
+      --text: #16313a;
+      --muted: #6b7d86;
+      --primary: #0b7a75;
+      --primary-dark: #095f5b;
+      --danger: #d64545;
+      --warning-bg: #fff8e6;
+      --warning-text: #9a6b00;
+      --success-bg: #e9f8f1;
+      --success-text: #0d7a4f;
+      --done-bg: #edf1ff;
+      --done-text: #4258c9;
+      --shadow: 0 12px 30px rgba(21, 41, 53, 0.08);
+      --radius: 18px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(180deg, #eef6f7 0%, var(--bg) 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .wrapper {
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .brand h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: #0a3c3b;
+    }
+
+    .brand p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      text-decoration: none;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 10px 20px rgba(11, 122, 117, 0.18);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-light {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-light:hover {
+      background: #f7fbfc;
+    }
+
+    .btn-danger {
+      background: #fff1f1;
+      color: var(--danger);
+      border: 1px solid #f3cccc;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(219, 228, 234, 0.8);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .card-body {
+      padding: 22px;
+    }
+
+    .current-card {
+      background: linear-gradient(135deg, #0b7a75, #0a615d);
+      color: white;
+      position: relative;
+      margin-bottom: 0;
+    }
+
+    .current-card::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 160px;
+      height: 160px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+    }
+
+    .current-label {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 10px;
+    }
+
+    .token-number {
+      font-size: 58px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .current-name {
+      font-size: 16px;
+      opacity: 0.95;
+    }
+
+    .stat-title {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .section-title {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      background: #fbfdfe;
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .table-note {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding: 22px;
+    }
+
+    .info-box {
+      background: #f8fbfc;
+      border: 1px solid #e6eef2;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .info-box h4 {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .info-box p {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    thead th {
+      text-align: left;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+      padding: 16px 22px;
+      background: #fbfdfe;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.02em;
+    }
+
+    tbody td {
+      padding: 16px 22px;
+      border-bottom: 1px solid #eef3f6;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    tbody tr:hover {
+      background: #fafdfd;
+    }
+
+    .active-row {
+      background: #fffdf4;
+    }
+
+    .token-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 52px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #eef8f8;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .badge-called {
+      background: var(--warning-bg);
+      color: var(--warning-text);
+    }
+
+    .badge-waiting {
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .badge-done {
+      background: var(--done-bg);
+      color: var(--done-text);
+    }
+
+    .empty-state {
+      padding: 30px 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    @media (max-width: 1100px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .wrapper {
+        padding: 18px 12px 28px;
+      }
+
+      .brand h1 {
+        font-size: 24px;
+      }
+
+      .token-number {
+        font-size: 46px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <% 
+      let current = tokens.find(t => t.called);
+      let waitingTokens = tokens.filter(t => t.status !== 'Done');
+      let doneTokens = tokens.filter(t => t.status === 'Done');
+      let waitingCount = tokens.filter(t => t.status !== 'Done' && !t.called).length;
+      let totalCount = tokens.length;
+      let latestDone = doneTokens.length > 0 ? doneTokens[doneTokens.length - 1] : null;
+    %>
+
+    <div class="topbar">
+      <div class="brand">
+        <h1>Admin Panel</h1>
+        <p>Medical Camp Queue Management Dashboard</p>
+      </div>
+
+      <div class="actions">
+        <a href="/call-next" class="btn btn-primary">Call Next Token</a>
+        <a href="/" class="btn btn-light">New Registration</a>
+      </div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="card current-card">
+        <div class="card-body">
+          <div class="current-label">Current Token</div>
+          <% if(current){ %>
+            <div class="token-number"><%= current.token_number %></div>
+            <div class="current-name"><%= current.name %></div>
+          <% } else { %>
+            <div class="token-number" style="font-size:34px;">—</div>
+            <div class="current-name">No token is currently active</div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="stat-title">Waiting Tokens</div>
+          <div class="stat-value"><%= waitingCount %></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="stat-title">Total Registrations</div>
+          <div class="stat-value"><%= totalCount %></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Current Token Information</div>
+      <% if(current){ %>
+        <div class="info-grid">
+          <div class="info-box">
+            <h4>Token Number</h4>
+            <p><%= current.token_number %></p>
+          </div>
+          <div class="info-box">
+            <h4>Patient Name</h4>
+            <p><%= current.name %></p>
+          </div>
+          <div class="info-box">
+            <h4>Phone Number</h4>
+            <p><%= current.phone || 'N/A' %></p>
+          </div>
+          <div class="info-box">
+            <h4>Service</h4>
+            <p><%= current.service || 'N/A' %></p>
+          </div>
+          <div class="info-box">
+            <h4>Status</h4>
+            <p><%= current.status %></p>
+          </div>
+          <div class="info-box">
+            <h4>Token ID</h4>
+            <p><%= current.id %></p>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="empty-state">No token is currently being served.</div>
+      <% } %>
+    </div>
+
+    <div class="card">
+      <div class="section-title">
+        <span>Patient Waitlist</span>
+        <span class="table-note">Done tokens are hidden from this list</span>
+      </div>
+
+      <% if(waitingTokens.length > 0){ %>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Service</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% waitingTokens.forEach(t => { %>
+                <tr class="<%= t.called ? 'active-row' : '' %>">
+                  <td><span class="token-pill"><%= t.token_number %></span></td>
+                  <td><strong><%= t.name %></strong></td>
+                  <td><%= t.phone || 'N/A' %></td>
+                  <td><%= t.service || 'N/A' %></td>
+                  <td>
+                    <% if(t.called){ %>
+                      <span class="badge badge-called">Called</span>
+                    <% } else { %>
+                      <span class="badge badge-waiting"><%= t.status || 'Waiting' %></span>
+                    <% } %>
+                  </td>
+                  <td>
+                    <% if(t.called){ %>
+                      <a href="/done/<%= t.id %>" class="btn-danger">Mark Done</a>
+                    <% } else { %>
+                      <span style="color:#9aa8af;">—</span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <div class="empty-state">No active registrations available.</div>
+      <% } %>
+    </div>
+
+    <div class="card">
+      <div class="section-title">
+        <span>Completed Token Information</span>
+        <span class="table-note">Done tokens remain available for record</span>
+      </div>
+
+      <% if(latestDone){ %>
+        <div class="info-grid">
+          <div class="info-box">
+            <h4>Last Completed Token</h4>
+            <p><%= latestDone.token_number %></p>
+          </div>
+          <div class="info-box">
+            <h4>Patient Name</h4>
+            <p><%= latestDone.name %></p>
+          </div>
+          <div class="info-box">
+            <h4>Phone Number</h4>
+            <p><%= latestDone.phone || 'N/A' %></p>
+          </div>
+          <div class="info-box">
+            <h4>Service</h4>
+            <p><%= latestDone.service || 'N/A' %></p>
+          </div>
+          <div class="info-box">
+            <h4>Status</h4>
+            <p>Done</p>
+          </div>
+          <div class="info-box">
+            <h4>Token ID</h4>
+            <p><%= latestDone.id %></p>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="empty-state">No completed tokens yet.</div>
+      <% } %>
+
+      <% if(doneTokens.length > 0){ %>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Service</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% doneTokens.forEach(t => { %>
+                <tr>
+                  <td><span class="token-pill"><%= t.token_number %></span></td>
+                  <td><strong><%= t.name %></strong></td>
+                  <td><%= t.phone || 'N/A' %></td>
+                  <td><%= t.service || 'N/A' %></td>
+                  <td><span class="badge badge-done">Done</span></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+
+  </div>
+</body>
+</html>
