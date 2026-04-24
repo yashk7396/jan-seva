@@ -1,133 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Medical Camp Registration</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jan Seva Samarpan Trust</title>
 
-    body {
-      background: linear-gradient(135deg, #eaf6f6, #f7fbfb);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 430px;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-      padding: 32px 28px;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .header h1 {
-      font-size: 24px;
-      color: #0b5d5d;
-      margin-bottom: 6px;
-    }
-
-    .header p {
-      font-size: 14px;
-      color: #666;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    label {
-      font-size: 14px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 7px;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #cfd8dc;
-      border-radius: 10px;
-      font-size: 15px;
-      outline: none;
-    }
-
-    button {
-      margin-top: 6px;
-      padding: 13px;
-      background: #0b7a75;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .logo {
-  width: 90px;
-  height: 90px;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto 14px;
-  background: #f1f9f9;
-  border-radius: 50%;
-  padding: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial;
 }
-  </style>
+
+body {
+  background: #f5f5f5;
+}
+
+/* HEADER (ORANGE) */
+.header-top {
+  background: linear-gradient(90deg, #ff4d00, #ff6a00);
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* BLUE STRIP */
+.header-bottom {
+  background: #004aad;
+  color: white;
+  text-align: center;
+  padding: 6px;
+  font-size: 14px;
+}
+
+/* MAIN CARD */
+.container {
+  max-width: 420px;
+  margin: 30px auto;
+  background: white;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* LOGO */
+.logo {
+  width: 80px;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  color: #0b5d5d;
+  margin-bottom: 10px;
+}
+
+/* INFO */
+.info {
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.info b {
+  display: block;
+}
+
+/* FORM */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+input, select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* BUTTON */
+button {
+  padding: 12px;
+  background: #ff4d00;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e84300;
+}
+
+/* FOOTER */
+.footer {
+  background: linear-gradient(90deg, #ff4d00, #ff6a00);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  margin-top: 20px;
+}
+</style>
+
 </head>
+
 <body>
-  <div class="container">
-    <div class="header">
-        <img src="/images/logo.png" alt="Jan Seva Samarpan Trust Logo" class="logo" />
-      <h1>Jan Seva Samarpan Trust</h1>
-      <p>Medical Camp Token Registration</p>
-    </div>
 
-    <form action="/generate" method="POST">
-      <div class="form-group">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" name="name" placeholder="Enter your full name" required />
-      </div>
+<!-- HEADER -->
+<div class="header-top">
+  Jan Seva Samarpan Trust
+</div>
 
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required />
-      </div>
+<!-- FORM CARD -->
+<div class="container">
 
-      <div class="form-group">
-        <label for="service">Select Service</label>
-        <select id="service" name="service" required>
-          <option value="">-- Choose a Service --</option>
-          <option value="Eye Checkup">Eye Checkup</option>
-          <option value="General">General</option>
-        </select>
-      </div>
+  <img src="/images/logo.png" class="logo">
 
-      <button type="submit">Get Token</button>
-    </form>
+  <h2 class="title">Jan Seva Samarpan Trust</h2>
+
+  <div class="info">
+    <b>📍 RZ 27-B, Durga Park, Street No. 9</b>
+    <b>Near Shiv Mandir, New Delhi - 110045</b>
+
+    <b>📞 9911106799 , 7900470005</b>
+
+    <b>🌐 jansevasamarpantrust.in | jansevasamarpantrust.org</b>
   </div>
+
+  <form action="/generate" method="POST">
+
+    <label>Full Name</label>
+    <input type="text" name="name" required>
+
+    <label>Phone Number</label>
+    <input type="tel" name="phone" required>
+
+    <label>Location</label>
+    <input type="text" name="place" required>
+
+    <label>Select Service</label>
+    <select name="service" required>
+      <option value="">Select</option>
+      <option>Eye Checkup</option>
+      <option>General Checkup</option>
+      <option>Lab Test</option>
+    </select>
+
+    <button type="submit">Get Token</button>
+
+  </form>
+
+</div>
+
+
 </body>
 </html>
