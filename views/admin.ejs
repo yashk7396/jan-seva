@@ -14,8 +14,8 @@
       --border: #dbe4ea;
       --text: #16313a;
       --muted: #6b7d86;
-      --primary: #0b7a75;
-      --primary-dark: #095f5b;
+      --primary: #ff4d00;
+      --primary-dark: #ff4d00;
       --danger: #d64545;
       --warning-bg: #fff8e6;
       --warning-text: #9a6b00;
@@ -59,7 +59,7 @@
       font-size: 28px;
       font-weight: 800;
       margin-bottom: 6px;
-      color: #0a3c3b;
+      color: #ff4d00;;
     }
 
     .brand p {
@@ -92,7 +92,7 @@
     .btn-primary {
       background: var(--primary);
       color: white;
-      box-shadow: 0 10px 20px rgba(11, 122, 117, 0.18);
+      box-shadow: 0 10px 20px #ff4d00;
     }
 
     .btn-primary:hover {
@@ -371,15 +371,18 @@
 
     <div class="topbar">
       <div class="brand">
-        <h1>Admin Panel</h1>
-        <p>Medical Camp Queue Management Dashboard</p>
+        <h1>Jan Seva Samarpan Trust</h1>
+        <h2>Admin Dashboard</h2>
       </div>
 
-      <div class="actions">
-        <a href="/call-next" class="btn btn-primary">Call Next Token</a>
-        <a href="/" class="btn btn-light">New Registration</a>
-      </div>
-    </div>
+     <div class="actions">
+  <a href="/call-next/Eye%20Checkup" class="btn btn-primary">Call Eye</a>
+  <a href="/call-next/General%20Checkup" class="btn btn-primary">Call General</a>
+  <a href="/call-next/Lab%20Test" class="btn btn-primary">Call Lab</a>
+
+  <a href="/form" class="btn btn-light">New Registration</a>
+  <a href="/logout" class="btn">Logout</a>
+</div>
 
     <div class="summary-grid">
       <div class="card current-card">
