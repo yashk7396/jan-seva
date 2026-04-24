@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Jan Seva Samarpan Trust</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff4d00, #004aad);
+}
+
+/* CARD */
+.login-box {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px 25px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* LOGO */
+.logo {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+/* TITLE */
+h2 {
+  color: #ff4d00;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* INPUT */
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 11px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #ff4d00;
+  box-shadow: 0 0 0 3px rgba(255,77,0,0.15);
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  padding: 12px;
+  background: #ff4d00;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #e84300;
+}
+
+/* ERROR */
+.error {
+  background: #ffe5e5;
+  color: #d64545;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #888;
+}
+
+/* MOBILE */
+@media (max-width: 400px) {
+  .login-box {
+    padding: 25px 18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+  <!-- LOGO -->
+  <img src="/images/logo.png" class="logo">
+
+  <!-- TITLE -->
+  <h2>Jan Seva Samarpan Trust</h2>
+  <p class="subtitle">Admin Login Panel</p>
+
+  <!-- ERROR MESSAGE -->
+  <% if (typeof error !== 'undefined') { %>
+    <div class="error"><%= error %></div>
+  <% } %>
+
+  <!-- FORM -->
+  <form method="POST" action="/login">
+
+    <div class="input-group">
+      <label>Username</label>
+      <input type="text" name="username" required>
+    </div>
+
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" name="password" required>
+    </div>
+
+    <button type="submit">Login</button>
+
+  </form>
+
+  <div class="footer">
+    Secure Access • Medical Camp System
+  </div>
+
+</div>
+
+</body>
+</html>
