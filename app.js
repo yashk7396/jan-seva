@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const session = require("express-session");
 
 const app = express();
 
@@ -9,60 +10,89 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
-// In-memory storage
+app.use(session({
+  secret: "janseva_secret",
+  resave: false,
+  saveUninitialized: true
+}));
+
+// 🔐 AUTH
+function checkAuth(req, res, next) {
+  if (req.session.loggedIn) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+}
+
+// STORAGE
 let tokens = [];
 
-// Home Form
+let counters = {
+  "Eye Checkup": 0,
+  "General Checkup": 0,
+  "Lab Test": 0
+};
+
+// 🔥 DEFAULT ROUTE
 app.get("/", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect("/admin");
+  } else {
+    res.redirect("/login");
+  }
+});
+
+// 🔐 LOGIN
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+
+  if (username === "admin" && password === "1234") {
+    req.session.loggedIn = true;
+    res.redirect("/admin");
+  } else {
+    res.send("Invalid Credentials");
+  }
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.redirect("/login");
+});
+
+// 📝 FORM
+app.get("/form", checkAuth, (req, res) => {
   res.render("form");
 });
 
-// Generate Token
-app.post("/generate", (req, res) => {
-  const { name, phone, service } = req.body;
+// 🎯 GENERATE TOKEN
+app.post("/generate", checkAuth, (req, res) => {
+  const { name, phone, service, place } = req.body;
 
-  if (!name || !phone || !service) {
-    return res.status(400).send("All fields are required");
-  }
+  counters[service] += 1;
+  let token_number = counters[service];
 
-  const token_number = tokens.length + 1;
+  let prefix = service === "Eye Checkup" ? "E"
+              : service === "General Checkup" ? "G"
+              : "L";
 
-  const now = new Date();
-  let lastTime = new Date(now);
+  let display_token = `${prefix}-${token_number}`;
 
-  if (tokens.length > 0) {
-    const last = tokens[tokens.length - 1];
+  let now = new Date();
+  let slot_time = now.toLocaleTimeString();
 
-    if (last.slot_time) {
-      const [time, modifier] = last.slot_time.split(" ");
-      let [h, m] = time.split(":").map(Number);
-
-      if (modifier === "PM" && h !== 12) h += 12;
-      if (modifier === "AM" && h === 12) h = 0;
-
-      lastTime = new Date(now);
-      lastTime.setHours(h, m, 0, 0);
-    }
-  }
-
-  const baseTime = now > lastTime ? new Date(now) : new Date(lastTime);
-  baseTime.setMinutes(baseTime.getMinutes() + 5);
-
-  let hour = baseTime.getHours();
-  const minute = baseTime.getMinutes();
-
-  const ampm = hour >= 12 ? "PM" : "AM";
-  hour = hour % 12;
-  hour = hour ? hour : 12;
-
-  const slot_time = `${hour}:${minute < 10 ? "0" : ""}${minute} ${ampm}`;
-
-  const token = {
+  let token = {
     id: Date.now(),
-    name: name.trim(),
-    phone: phone.trim(),
-    service: service.trim(),
+    name,
+    phone,
+    place,
+    service,
     token_number,
+    display_token,
     slot_time,
     status: "Waiting",
     called: false
@@ -73,35 +103,27 @@ app.post("/generate", (req, res) => {
   res.redirect(`/print/${token.id}`);
 });
 
-// Print Page
-app.get("/print/:id", (req, res) => {
+// 🖨 PRINT
+app.get("/print/:id", checkAuth, (req, res) => {
   const token = tokens.find(t => t.id == req.params.id);
-
-  if (!token) {
-    return res.status(404).send("Token not found");
-  }
-
   res.render("print", { token });
 });
 
-// Admin Panel
-app.get("/admin", (req, res) => {
+// 📊 ADMIN
+app.get("/admin", checkAuth, (req, res) => {
   res.render("admin", { tokens });
 });
 
-// Call Next Token
-app.get("/call-next", (req, res) => {
-  const currentCalled = tokens.find(t => t.called);
+// 🔔 CALL NEXT
+app.get("/call-next/:service", checkAuth, (req, res) => {
+  const service = decodeURIComponent(req.params.service);
 
-  if (currentCalled) {
-    currentCalled.called = false;
+  let serviceTokens = tokens.filter(t => t.service === service);
 
-    if (currentCalled.status !== "Done") {
-      currentCalled.status = "Waiting";
-    }
-  }
+  let current = serviceTokens.find(t => t.called);
+  if (current) current.called = false;
 
-  const next = tokens.find(t => t.status === "Waiting" && !t.called);
+  let next = serviceTokens.find(t => t.status === "Waiting");
 
   if (next) {
     next.called = true;
@@ -110,38 +132,32 @@ app.get("/call-next", (req, res) => {
 
   res.redirect("/admin");
 });
-
-// Mark Done
-app.get("/done/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const token = tokens.find(t => t.id === id);
-
-  if (!token) {
-    return res.status(404).send("Token not found");
+// ✅ DONE
+app.get("/done/:id", checkAuth, (req, res) => {
+  const token = tokens.find(t => t.id == req.params.id);
+  if (token) {
+    token.status = "Done";
+    token.called = false;
   }
-
-  token.status = "Done";
-  token.called = false;
-
   res.redirect("/admin");
 });
 
-// Display Screen
-app.get("/display", (req, res) => {
+// 📺 DISPLAY
+app.get("/display", checkAuth, (req, res) => {
   res.render("display", { tokens });
 });
 
-// Optional JSON route for debug
+// DEBUG
 app.get("/tokens", (req, res) => {
   res.json(tokens);
 });
 
-// Optional 404 handler
+// 404
 app.use((req, res) => {
   res.status(404).send("Page not found");
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
