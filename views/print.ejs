@@ -1,169 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Print Token</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Print Token</title>
 
-    body {
-      background: #f4f7f8;
-      color: #000;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial;
+}
 
-    .slip {
-      width: 280px;
-      background: #fff;
-      border: 1px solid #000;
-      padding: 12px;
-      text-align: center;
-    }
+body {
+  background: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
 
-    .logo {
-      width: 55px;
-      height: 55px;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto 8px;
-    }
+/* HEADER */
+.header-top {
+  background: linear-gradient(90deg, #ff4d00, #ff6a00);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
 
-    .title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 4px;
-    }
+.header-bottom {
+  background: #004aad;
+  color: white;
+  text-align: center;
+  padding: 4px;
+  font-size: 12px;
+}
 
-    .subtitle {
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
+/* SLIP CARD */
+.slip {
+  width: 280px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
 
-    .token-box {
-      border: 1px dashed #000;
-      padding: 10px;
-      margin: 10px 0;
-    }
+/* LOGO */
+.logo {
+  width: 60px;
+  display: block;
+  margin: 10px auto;
+}
 
-    .token-label {
-      font-size: 11px;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
+/* TITLE */
+.title {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
 
-    .token-number {
-      font-size: 30px;
-      font-weight: bold;
-    }
+/* TOKEN */
+.token-box {
+  text-align: center;
+  margin: 10px;
+  padding: 10px;
+  border: 1px dashed #000;
+}
 
-    .line {
-      border-top: 1px dashed #000;
-      margin: 10px 0;
-    }
+.token-number {
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 5px;
+}
 
-    .detail {
-      text-align: left;
-      font-size: 13px;
-      margin: 6px 0;
-      word-break: break-word;
-    }
+/* DETAILS */
+.detail {
+  font-size: 13px;
+  margin: 5px 12px;
+  font-weight: bold;
 
-    .footer-note {
-      font-size: 11px;
-      margin-top: 10px;
-      line-height: 1.5;
-    }
+}
 
-    .actions {
-      margin-top: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+/* LINE */
+.line {
+  border-top: 1px dashed #000;
+  margin: 8px 10px;
+}
 
-    .btn {
-      padding: 10px;
-      border: none;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: bold;
-      text-decoration: none;
-      display: block;
-      text-align: center;
-    }
+/* FOOTER */
+.footer {
+  background: linear-gradient(90deg, #ff4d00, #ff6a00);
+  color: white;
+  text-align: center;
+  padding: 6px;
+  font-size: 11px;
+  margin-top: 10px;
+}
 
-    .btn-print {
-      background: #0b7a75;
-      color: #fff;
-    }
+/* BUTTONS */
+.actions {
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
-    .btn-admin {
-      background: #fff;
-      color: #000;
-      border: 1px solid #000;
-    }
+.btn {
+  padding: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
 
-    @media print {
-      @page {
-        size: 58mm auto;
-        margin: 4mm;
-      }
+.btn-print {
+  background: #ff4d00;
+  color: white;
+}
 
-      body {
-        background: #fff;
-        padding: 0;
-      }
+.btn-admin {
+  background: white;
+  border: 1px solid #000;
+}
 
-      .slip {
-        width: 58mm;
-        border: none;
-        padding: 0;
-      }
+/* PRINT */
+@media print {
+  @page {
+    size: 58mm auto;
+    margin: 2mm;
+  }
 
-      .actions {
-        display: none !important;
-      }
-    }
-  </style>
+  body {
+    padding: 0;
+  }
+
+  .slip {
+    width: 58mm;
+    box-shadow: none;
+  }
+
+  .actions {
+    display: none;
+  }
+}
+</style>
 </head>
+
 <body>
-  <div class="slip">
-    <img src="/images/logo.png" alt="Jan Seva Samarpan Trust Logo" class="logo">
 
-    <div class="title">Jan Seva Samarpan Trust</div>
-    <div class="subtitle">Free Medical Camp</div>
+<div class="slip">
 
-    <div class="line"></div>
 
-    <div class="token-box">
-      <div class="token-label">Token Number</div>
-      <div class="token-number"><%= token.token_number %></div>
-    </div>
 
-    <div class="detail"><strong>Name:</strong> <%= token.name %></div>
-    <div class="detail"><strong>Phone:</strong> <%= token.phone || 'N/A' %></div>
-    <div class="detail"><strong>Service:</strong> <%= token.service || 'General' %></div>
-    <div class="detail"><strong>Time:</strong> <%= token.slot_time || 'N/A' %></div>
+  
 
-    <div class="line"></div>
+  <!-- LOGO -->
+  <img src="/images/logo.png" class="logo">
 
-    <div class="footer-note">
-      Please arrive 10 minutes early.<br>
-      Keep this token slip safe.
-    </div>
-
-    <div class="actions">
-      <button class="btn btn-print" onclick="window.print()">Print Slip</button>
-      <a href="/admin" class="btn btn-admin">Go to Admin Panel</a>
-    </div>
+  <b><div class="title">Jan Seva Samarpan Trust</div></b>
+  <!-- ADDRESS -->
+ <b> <div class="detail" style="font-size:13px;">
+    📍 RZ 27-B, Durga Park, Street No. 9<br>
+    New Delhi - 110045
   </div>
+
+  <div class="detail" style="font-size:13px;">
+    📞 9911106799 , 7900470005
+  </div>
+
+  <div class="detail" style="font-size:13px;">
+    🌐 jansevasamarpantrust.in
+  </div></b>
+
+
+  <div class="line"></div>
+
+  <!-- TOKEN -->
+  <div class="token-box">
+    TOKEN NO
+    <div class="token-number"><%= token.token_number %></div>
+  </div>
+
+  <!-- DETAILS -->
+  <div class="detail"><strong>Name:</strong> <%= token.name %></div>
+  <div class="detail"><strong>Phone:</strong> <%= token.phone %></div>
+  <div class="detail"><strong>Location:</strong> <%= token.place %></div>
+  <div class="detail"><strong>Service:</strong> <%= token.service %></div>
+  <div class="detail"><strong>Time:</strong> <%= token.slot_time %></div>
+
+  <div class="line"></div>
+
+  
+  <div class="detail" style="text-align:center; font-size:12px;">
+  <b> Please arrive 10 minutes early</b>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button class="btn btn-print" onclick="window.print()">Print</button>
+    <button onclick="window.location.href='/admin'" class="btn btn-admin">
+  Admin Panel
+</button>
+  </div>
+
+</div>
+
 </body>
 </html>
